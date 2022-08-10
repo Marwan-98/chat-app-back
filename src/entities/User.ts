@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 
 @Entity("user")
-export class User extends BaseEntity {
+ class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -33,9 +33,6 @@ export class User extends BaseEntity {
 
     @UpdateDateColumn({ type: "timestamp" })
     date_updated: Date;
-
-
-
-
 }
 
+export default User;

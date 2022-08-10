@@ -1,9 +1,11 @@
-import express, { json, request, response, urlencoded } from "express";
+import express, { json, urlencoded } from "express";
+import helmet from "helmet";
 import morgan from "morgan";
-import cors from 'cors';
-import helmet from 'helmet'
 import { config } from "dotenv";
-import { AppDataSource } from './data-source';
+import cors from "cors";
+import AppDataSource from "./data-source";
+
+import userRoutes from "./routes/userRoutes"
 
 const app = express();
 
@@ -14,21 +16,11 @@ app.use(helmet());
 app.use(json());
 app.use(urlencoded({ extended: false }));
 
+app.use("/user", userRoutes);
 
+console.log(process.env.PORT)
 
-
-app.listen(process.env.PORT, async () => {
-    console.log('listening to ');
-    try {
-
-        await AppDataSource.initialize();
-        console.log('connect to database');
-
-    } catch (error) {
-
-
-        throw new Error('${(error as error).message}');
-
-    }
-});
-
+app.listen(process.env.PORT, () => {
+  console.log(`listening on port: ${process.env.PORT}`);
+  AppDataSource.initialize();
+})

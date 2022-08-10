@@ -1,27 +1,18 @@
-import { config } from 'dotenv';
-import 'reflect-metadata';
-import { DataSource } from 'typeorm';
-import { User } from './entities/User';
-
-
+import { config } from "dotenv";
+import { DataSource } from "typeorm";
+import User from "./entities/User";
 
 config();
-export const AppDataSource = new DataSource({
-  type: 'postgres',
+
+const AppDataSource = new DataSource({
+  type: "postgres",
   host: process.env.PGHOST,
   port: +process.env.PGPORT!,
   username: process.env.PGUSER,
-  password: process.env.PGPASSWORD,
-  database: process.env.PGDATABASE,
+  password: process.env.PGPASS,
   synchronize: true,
-  logging: false,
   entities: [User],
-  migrations: ['migration/*.ts'],
-  subscribers: []
+  database: "postgres",
 });
 
-
-
-
-
-    export default AppDataSource
+export default AppDataSource;
