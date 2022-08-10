@@ -1,5 +1,7 @@
 import express from "express";
-import User from "../entities/User"
+import User from "../entities/User";
+import bcrypt from "bcryptjs";
+
 
 const router = express();
 
@@ -9,17 +11,20 @@ router.post("/add", async (req, res) => {
 
 	const user = await User.findOne({where: {email: email}});
 
+	const hashPassword = await bcrypt.hash(password, 10);
+
 	if(!user) {
 		const newUser = await User.create({
 			firstName,
 			lastName,
 			email,
-			password
+			password: hashPassword
 		})
 		await newUser.save()
 		res.json(newUser);
+	} else {
+			res.status(400).send("user alredy exists")
 	}
-	res.status(400).send("user alredy exists")
 	} catch(err) {
 		res.status(500).json(err);
 	}
