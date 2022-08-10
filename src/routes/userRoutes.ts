@@ -1,6 +1,7 @@
 import express from "express";
 import User from "../entities/User";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 
 const router = express();
@@ -21,7 +22,15 @@ router.post("/add", async (req, res) => {
 			password: hashPassword
 		})
 		await newUser.save()
-		res.json(newUser);
+		const token = jwt.sign(
+			{email: newUser.email}, 
+			process.env.TOKEN_KEY!, {
+        	expiresIn: "1d",
+      })
+		res.json({
+			newUser,
+			token
+		});
 	} else {
 			res.status(400).send("user alredy exists")
 	}
