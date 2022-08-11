@@ -75,17 +75,15 @@ router.get("/login", async (req, res) => {
 	}
 })
 
-router.get('/me', isAuthenticated, async (req: AuthRequest, res) => {
-	try {
-	  const email = req.email
-  
-	  const user = await User.findOne({ where: { email } })
-  
-  
-	  res.json({ user })
-	} catch (error) {
-	  res.status(500).json({ error })
-	}
+router.get('/me', async (req, res) => {
+	let token = req.get("auth")!
+		try {
+			let payload;
+			payload = jwt.verify(token, process.env.TOKEN_KEY!)
+			res.json(payload);
+		} catch (err) {
+			res.status(400).json(err)
+		}
   })
   
   
