@@ -39,6 +39,7 @@ router.post("/add", async (req, res) => {
 		res.status(500).json(err);
 	}
 })
+
 router.get("/login", async (req, res) => {
 	try {
 	const {email, password} = req.body;
