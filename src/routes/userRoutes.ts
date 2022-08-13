@@ -1,12 +1,9 @@
-import express from "express";
 import User from "../entities/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Raw } from "typeorm";
-import { isAuthenticated } from "../middleware/authentication";
-import { AuthRequest } from "../types";
-
-
+import express  from 'express'
+import { isAuthenticated } from '../middleware/auth'
 const router = express();
 
 router.post("/add", async (req, res) => {
@@ -41,7 +38,7 @@ router.post("/add", async (req, res) => {
 		res.status(500).json(err);
 	}
 })
-router.get("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
 	try {
 		const { email, password } = req.body;
 
@@ -74,18 +71,19 @@ router.get("/login", async (req, res) => {
 	}
 })
 
-router.get('/me', isAuthenticated, async (req: AuthRequest, res) => {
-	try {
-	  const email = req.email
-  
-	  const user = await User.findOne({ where: { email } })
-  
-  
-	  res.json({ user })
-	} catch (error) {
-	  res.status(500).json({ error })
-	}
-  })
+
+router.get('/me', isAuthenticated, async (req,res) =>{
+    try{
+        const {email} = req.body
+        const user = await User.findOne({where:{email}})
+        res.json({user})
+        
+    }catch(error){
+        res.status(500).json({ error })
+
+    }
+})
+
   
   
 

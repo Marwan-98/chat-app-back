@@ -21,7 +21,7 @@ import {
     lastName: string;
 
 
-    @Column({unique:true})
+    @Column()
     email: string;
 
     @Column()
