@@ -6,6 +6,7 @@ import cors from "cors";
 import AppDataSource from "./data-source";
 
 import userRoutes from "./routes/userRoutes"
+import messageRoutes from "./routes/messageRoute"
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 
 app.use("/user", userRoutes);
+app.use("/message", messageRoutes);
 
 console.log(process.env.PORT)
 

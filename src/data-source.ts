@@ -1,6 +1,8 @@
 import { config } from "dotenv";
 import { DataSource } from "typeorm";
 import User from "./entities/User";
+import Message from "./entities/Message";
+import Conversation from "./entities/Conversation";
 
 config();
 
@@ -11,7 +13,7 @@ const AppDataSource = new DataSource({
   username: process.env.PGUSER,
   password: process.env.PGPASS,
   synchronize: true,
-  entities: [User],
+  entities: [User, Message, Conversation],
   database: "postgres",
 });
 

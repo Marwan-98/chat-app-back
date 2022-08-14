@@ -6,10 +6,17 @@ import {
     BaseEntity,
     CreateDateColumn,
     UpdateDateColumn,
+    OneToMany,
+    ManyToOne,
+    ManyToMany
+
 
 } from "typeorm";
 
-@Entity("user")
+import Message from "./Message";
+import Conversation from "./Conversation";
+
+@Entity()
  class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -33,6 +40,12 @@ import {
 
     @UpdateDateColumn({ type: "timestamp" })
     date_updated: Date;
+
+   @OneToMany(() => Message, (message) => message.user)
+   messages: Message[];
+
+   @ManyToMany(() => Conversation, (conversation) => conversation.users)
+   conversations: Conversation[]
 }
 
 export default User;
