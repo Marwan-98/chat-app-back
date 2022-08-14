@@ -38,7 +38,7 @@ router.post("/add", async (req, res) => {
 	}
 })
 
-router.get("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
 	try {
 		const { email, password } = req.body;
 
@@ -48,6 +48,9 @@ router.get("/login", async (req, res) => {
 					value: `%${email}%`,
 				}),
 			},
+			relations: {
+				conversations: {users: true, messages: {user: true}}
+			}
 		});
 
 
@@ -64,7 +67,7 @@ router.get("/login", async (req, res) => {
 		const token = jwt.sign({ email: user?.email }, process.env.TOKEN_KEY!, {
 			expiresIn: '1d'
 		});
-		res.json({ data: token })
+		res.json({ data: token, user: user })
 
 	} catch (err) {
 		res.status(500).json(err);
@@ -82,5 +85,14 @@ router.get('/me', async (req, res) => {
 		}
   })  
   
+  router.get('/all', async (req, res) => {
+		try {
+			const users = await User.find();
+			return res.json(users);
+		} catch (err) {
+			res.status(400).json(err)
+		}
+  })
+    
 
 export default router

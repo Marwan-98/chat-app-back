@@ -14,7 +14,6 @@ import {
 
 import User from "./User";
 import Message from "./Message";
-import ConversationTable from "./Conversation_User"
 
 @Entity()
  class Conversation extends BaseEntity {
