@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Raw } from "typeorm";
 import express  from 'express'
-import { isAuthenticated } from '../middleware/auth'
 const router = express();
 
 router.post("/add", async (req, res) => {

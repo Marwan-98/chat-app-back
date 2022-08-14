@@ -4,7 +4,6 @@ import morgan from "morgan";
 import { config } from "dotenv";
 import cors from "cors";
 import AppDataSource from "./data-source";
-
 import userRoutes from "./routes/userRoutes"
 import messageRoutes from "./routes/messageRoute"
 
