@@ -1,12 +1,9 @@
-import express from "express";
 import User from "../entities/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Raw } from "typeorm";
-import { isAuthenticated } from "../middleware/authentication";
-import { AuthRequest } from "../types";
-
-
+import express  from 'express'
+import { isAuthenticated } from '../middleware/auth'
 const router = express();
 
 router.post("/add", async (req, res) => {
@@ -84,8 +81,7 @@ router.get('/me', async (req, res) => {
 		} catch (err) {
 			res.status(400).json(err)
 		}
-  })
-  
+  })  
   
 
 export default router

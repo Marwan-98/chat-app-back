@@ -1,7 +1,6 @@
 import express from "express";
 
 import User from "../entities/User";
-import ConversationTable from "../entities/Conversation_User"
 import Conversation from "../entities/Conversation";
 import Message from "../entities/Message";
 
@@ -9,7 +8,7 @@ const router = express();
 
 
 router.post("/new", async (req, res) => {
-	const {body, userID, receiverID, conversationID} = req.body;
+	const {body, userID, receiverID} = req.body;
 
 	const sender = await User.findOne({ where: { id: userID } });
 

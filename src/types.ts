@@ -9,3 +9,15 @@ export interface MyToken extends JwtPayload {
 export interface AuthRequest extends Request {
   email: string
 }
+
+export interface userInfo extends Request {
+    firstname: string
+
+    lastname: string
+
+    email: string
+
+
+    password: string
+
+ }
