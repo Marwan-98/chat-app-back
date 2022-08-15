@@ -2,12 +2,11 @@
 import {
     Entity,
     PrimaryGeneratedColumn,
-    Column,
+
     BaseEntity,
-    CreateDateColumn,
-    UpdateDateColumn,
+  
     OneToMany,
-    ManyToOne,
+
     ManyToMany,
     JoinTable
 } from "typeorm";

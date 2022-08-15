@@ -6,20 +6,20 @@ export const isAuthenticated = async (req: AuthRequest, res, next) => {
   if (!authorization) {
     return res.status(403).send(" A token is requried for authentication");
 
-  }else{
-  jwt.verify(
-    authorization,
-    process.env.TOKEN_KEY!,
-    async (err, token: MyToken) => {
-      if (err) {
-        return res.status(401).json({
-          message: 'Invalid token',
-        })
+  } else {
+    jwt.verify(
+      authorization,
+      process.env.TOKEN_KEY!,
+      async (err, token: MyToken) => {
+        if (err) {
+          return res.status(401).json({
+            message: 'Invalid token',
+          })
+        }
+        req.email = token.email
+        next()
+
       }
-      req.email = token.email
-      next()
-   
-    }
-  )
-}
+    )
+  }
 }

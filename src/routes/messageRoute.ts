@@ -20,6 +20,7 @@ router.post("/new", async (req, res) => {
 		const message = await Message.create({
 			body,
 			user: sender
+		
 		});
 		await message.save();
 
