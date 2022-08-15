@@ -1,6 +1,6 @@
 import User from "../entities/User";
 import express from "express"
-import { Raw } from "typeorm";
+import { In, Raw } from "typeorm";
 import Conversation from "../entities/Conversation";
 
 const router = express();
@@ -20,15 +20,7 @@ router.post("/all", async (req, res) => {
 			}
 		});
 
-        const conversations = await Conversation.find({
-			where: {users: {email: email}},
-            relations: {
-                users: true,
-                messages: {user: true}
-			}
-		});
-
-		return res.json( conversations )
+		return res.json( user.conversations )
 
 	} catch (err) {
 		res.status(500).json(err);
