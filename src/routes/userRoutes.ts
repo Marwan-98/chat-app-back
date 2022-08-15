@@ -31,7 +31,7 @@ router.post("/add", async (req, res) => {
 				token
 			});
 		} else {
-			res.status(400).send("user alredy exists")
+			return res.status(400).send("user alredy exists")
 		}
 	} catch (err) {
 		res.status(500).json(err);
@@ -79,9 +79,9 @@ router.get('/me', async (req, res) => {
 		try {
 			let payload;
 			payload = jwt.verify(token, process.env.TOKEN_KEY!)
-			res.json(payload);
+			return res.json(payload);
 		} catch (err) {
-			res.status(400).json(err)
+			return res.status(400).json(err)
 		}
   })  
   
@@ -90,7 +90,7 @@ router.get('/me', async (req, res) => {
 			const users = await User.find();
 			return res.json(users);
 		} catch (err) {
-			res.status(400).json(err)
+			return res.status(400).json(err)
 		}
   })
     

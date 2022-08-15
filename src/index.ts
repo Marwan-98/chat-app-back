@@ -6,6 +6,9 @@ import cors from "cors";
 import AppDataSource from "./data-source";
 import userRoutes from "./routes/userRoutes"
 import messageRoutes from "./routes/messageRoute"
+import conversationRoutes from "./routes/conversationRoute"
+import {Server}  from "socket.io";
+import http from "http";
 
 const app = express();
 
@@ -18,10 +21,14 @@ app.use(urlencoded({ extended: false }));
 
 app.use("/user", userRoutes);
 app.use("/message", messageRoutes);
+app.use("/conversation", conversationRoutes);
+
+const server = http.createServer(app);
+const io = new Server(server);
 
 console.log(process.env.PORT)
 
-app.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, () => {
   console.log(`listening on port: ${process.env.PORT}`);
   AppDataSource.initialize();
 })

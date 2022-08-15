@@ -27,7 +27,7 @@ router.post("/new", async (req, res) => {
 
 		await conversation.save();
 
-		res.json(conversation);
+		return res.json(conversation);
 	}
 })
 
