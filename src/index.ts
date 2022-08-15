@@ -7,7 +7,7 @@ import AppDataSource from "./data-source";
 import userRoutes from "./routes/userRoutes"
 import messageRoutes from "./routes/messageRoute"
 import conversationRoutes from "./routes/conversationRoute"
-import {Server}  from "socket.io";
+import { Server } from 'socket.io';
 import http from "http";
 
 const app = express();

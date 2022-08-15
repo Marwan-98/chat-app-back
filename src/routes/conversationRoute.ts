@@ -27,4 +27,26 @@ router.post("/all", async (req, res) => {
 	}
 })
 
+
+router.post('/newConv', async (req, res) => {
+
+    try {
+        const { senderId, userId } = req.body
+        const user = await User.findOne({ where: { id: userId } });
+        const sender = await User.findOne({ where: { id: senderId } });
+        if (user && sender) {
+            const conversation = Conversation.create({ users: [] })
+            conversation.users.push(user, sender);
+            await conversation.save()
+
+            return res.json(conversation)
+        }
+
+
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+
 export default router
