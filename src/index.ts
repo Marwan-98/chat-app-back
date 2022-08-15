@@ -24,9 +24,20 @@ app.use("/message", messageRoutes);
 app.use("/conversation", conversationRoutes);
 
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
 
-console.log(process.env.PORT)
+io.on("connection", (socket) => {
+  console.log(`user: ${socket.id} connected to the database`)
+  socket.on("join_conversation", (conversation_id) => {
+    socket.join(conversation_id);
+    console.log(`user joined conversation no.: ${conversation_id}`)
+  })
+})
 
 server.listen(process.env.PORT, () => {
   console.log(`listening on port: ${process.env.PORT}`);
