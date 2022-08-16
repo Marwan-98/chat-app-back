@@ -32,12 +32,22 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log(`user: ${socket.id} connected to the database`)
+  console.log(`user: ${socket.id} connected to the database`) 
   socket.on("join_conversation", (conversation_id) => {
     socket.join(conversation_id);
     console.log(`user joined conversation no.: ${conversation_id}`)
   })
 })
+/*
+//send and get message
+socket.on("sendMessage", ({ sender_email, receiver_email, text }) => {
+  const user = getUser(receiver_email);
+  io.to(user.socket.id).emit("getMessage", {
+    sender_email,
+    text,
+  });
+});
+*/
 
 server.listen(process.env.PORT, () => {
   console.log(`listening on port: ${process.env.PORT}`);

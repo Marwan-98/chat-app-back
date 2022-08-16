@@ -49,4 +49,30 @@ router.post('/newConv', async (req, res) => {
 })
 
 
+router.get("/:conv_id", async (req, res) => {
+    try {
+        const conv_id = +req.params.conv_id;
+
+		const conversation = await Conversation.findOne({ where: { id: conv_id }, relations: {messages: {user: true}} });
+
+      
+        if (!conversation)
+            return res.status(404).json({ message: " conversation not found  " });
+
+
+
+			
+        return res.json(conversation.messages);
+
+
+
+
+    } catch (error) {
+        return res.status(500).json({ message: error });
+
+
+    };
+
+})
+
 export default router
