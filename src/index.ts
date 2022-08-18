@@ -39,8 +39,14 @@ io.on("connection", (socket) => {
   })
 
   socket.on("send_message", (data) => {
+    console.log("private")
      socket.to(data.id).emit("recieve_message", data);
   })
+
+  socket.on("send_group_message", (data) => {
+    console.log("group recieved")
+    io.to(data.id).emit("recieve_group_message", data);
+ })
 })
 /*
 //send and get message
