@@ -53,7 +53,7 @@ router.get("/:conv_id", async (req, res) => {
     try {
         const conv_id = +req.params.conv_id;
 
-		const conversation = await Conversation.findOne({ where: { id: conv_id }, relations: {messages: {user: true}} });
+		const conversation = await Conversation.findOne({ where: { id: conv_id }, relations: {messages: {user: true}}});
 
       
         if (!conversation)
@@ -74,5 +74,7 @@ router.get("/:conv_id", async (req, res) => {
     };
 
 })
+
+
 
 export default router

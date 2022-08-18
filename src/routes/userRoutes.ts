@@ -77,6 +77,7 @@ router.post("/login", async (req, res) => {
 	}
 })
 
+/*
 router.get('/me', async (req, res) => {
 	let token = req.get("auth")!
 	try {
@@ -88,8 +89,8 @@ router.get('/me', async (req, res) => {
 	}
 })
 
+*/
 
-/*
   router.get('/me', isAuthenticated, async (req: AuthenticatedRequest, res) => {
 	try {
 	  const user = await User.findOne({
@@ -112,7 +113,7 @@ router.get('/me', async (req, res) => {
 	  });
 	}
   }); 
-*/
+
 router.get('/all', async (req, res) => {
 	try {
 		const users = await User.find();
@@ -143,5 +144,7 @@ router.get('/:id', async (req, res) => {
 		};
 	
 	})
+
+	
 
 export default router
