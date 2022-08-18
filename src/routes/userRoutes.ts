@@ -27,7 +27,7 @@ router.post("/add", async (req, res) => {
 				process.env.TOKEN_KEY!, {
 				expiresIn: "1d",
 			})
-			res.json({
+			return res.json({
 				newUser,
 				token
 			});
