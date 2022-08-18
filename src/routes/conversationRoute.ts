@@ -16,7 +16,7 @@ router.post("/all", async (req, res) => {
 				}),
 			},
 			relations: {
-				conversations: {users: true, messages: {user: true}}
+				conversations: {users: true, messages: {user: true, conversationID: true}}
 			}
 		});
 
@@ -25,6 +25,54 @@ router.post("/all", async (req, res) => {
 	} catch (err) {
 		res.status(500).json(err);
 	}
+})
+
+
+router.post('/newConv', async (req, res) => {
+
+    try {
+        const { senderId, userId } = req.body
+        const user = await User.findOne({ where: { id: userId } });
+        const sender = await User.findOne({ where: { id: senderId } });
+        if (user && sender) {
+            const conversation = Conversation.create({ users: [] })
+            conversation.users.push(user, sender);
+            await conversation.save()
+
+            return res.json(conversation)
+        }
+
+
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+
+router.get("/:conv_id", async (req, res) => {
+    try {
+        const conv_id = +req.params.conv_id;
+
+		const conversation = await Conversation.findOne({ where: { id: conv_id }, relations: {messages: {user: true}} });
+
+      
+        if (!conversation)
+            return res.status(404).json({ message: " conversation not found  " });
+
+
+
+			
+        return res.json(conversation.messages);
+
+
+
+
+    } catch (error) {
+        return res.status(500).json({ message: error });
+
+
+    };
+
 })
 
 export default router

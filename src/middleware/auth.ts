@@ -1,25 +1,33 @@
 import jwt from 'jsonwebtoken'
-import { AuthRequest, MyToken } from '../types'
 
-export const isAuthenticated = async (req: AuthRequest, res, next) => {
-  const { authorization } = req.headers
-  if (!authorization) {
-    return res.status(403).send(" A token is requried for authentication");
-
-  }else{
-  jwt.verify(
-    authorization,
-    process.env.TOKEN_KEY!,
-    async (err, token: MyToken) => {
+export const isAuthenticated = (req, res, next) => {
+  try {
+    const token = req.headers.authorization
+    if (!token) {
+      return res.status(401).json({
+        message: 'No token provided',
+      })
+    }
+   
+    jwt.verify(token, process.env.TOKEN_KEY!, (err, token) => {
       if (err) {
         return res.status(401).json({
           message: 'Invalid token',
         })
       }
+      // check if token is expired
+      if (token.exp < Date.now() / 1000) {
+        return res.status(401).json({
+          message: 'Token expired',
+        })
+      }
+
       req.email = token.email
       next()
-   
-    }
-  )
-}
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Something went wrong',
+    })
+  }
 }
