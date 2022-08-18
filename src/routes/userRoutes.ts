@@ -2,10 +2,8 @@ import User from "../entities/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Raw } from "typeorm";
-import express from 'express'
-import { isAuthenticated } from "../middleware/auth";
-import { AuthenticatedRequest } from "../types";
-import Conversation from '../entities/Conversation';
+import express from 'express';
+
 const router = express();
 
 router.post("/add", async (req, res) => {
@@ -77,51 +75,27 @@ router.post("/login", async (req, res) => {
 	}
 })
 
-/*
 router.get('/me', async (req, res) => {
 	let token = req.get("auth")!
-	try {
-		let payload;
-		payload = jwt.verify(token, process.env.TOKEN_KEY!)
-		return res.json(payload);
-	} catch (err) {
-		return res.status(400).json(err)
-	}
-})
+		try {
+			let payload;
+			payload = jwt.verify(token, process.env.TOKEN_KEY!)
+			return res.json(payload);
+		} catch (err) {
+			return res.status(400).json(err)
+		}
+  })  
 
-*/
 
-  router.get('/me', isAuthenticated, async (req: AuthenticatedRequest, res) => {
-	try {
-	  const user = await User.findOne({
-		where: {
-		  email: Raw((alias) => `LOWER(${alias}) Like LOWER(:value)`, {
-			value: `%${req.email}%`,
-		  }),
-		},
-	  });
-	  console.log({ email: req.email });
-	  if (!user) {
-		return res.status(404).json({
-		  message: 'User not found',
-		});
-	  }
-	  return res.json({ user });
-	} catch (error) {
-	  return res.status(500).json({
-		message: 'Something went wrong',
-	  });
-	}
-  }); 
 
-router.get('/all', async (req, res) => {
-	try {
-		const users = await User.find();
-		return res.json(users);
-	} catch (err) {
-		return res.status(400).json(err)
-	}
-})
+  router.get('/all', async (req, res) => {
+		try {
+			const users = await User.find();
+			return res.json(users);
+		} catch (err) {
+			return res.status(400).json(err)
+		}
+  })
 
 router.get('/:id', async (req, res) => {
 	try {
@@ -144,7 +118,5 @@ router.get('/:id', async (req, res) => {
 		};
 	
 	})
-
-	
 
 export default router

@@ -16,7 +16,7 @@ router.post("/all", async (req, res) => {
 				}),
 			},
 			relations: {
-				conversations: {users: true, messages: {user: true}}
+				conversations: {users: true, messages: {user: true, conversationID: true}}
 			}
 		});
 

@@ -35,11 +35,17 @@ io.on("connection", (socket) => {
   console.log(`user: ${socket.id} connected to the database`) 
   socket.on("join_conversation", (conversation_id) => {
     socket.join(conversation_id);
+    console.log(socket)
     console.log(`user joined conversation no.: ${conversation_id}`)
 
 
     
     
+  })
+
+  socket.on("send_message", (data) => {
+    console.log(data.id);
+     socket.to(data.id).emit("recieve_message", data);
   })
 })
 /*
