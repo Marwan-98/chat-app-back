@@ -7,7 +7,7 @@ import AppDataSource from "./data-source";
 import userRoutes from "./routes/userRoutes"
 import messageRoutes from "./routes/messageRoute"
 import conversationRoutes from "./routes/conversationRoute"
-import {Server}  from "socket.io";
+import { Server, Socket } from 'socket.io';
 import http from "http";
 
 const app = express();
@@ -32,11 +32,15 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log(`user: ${socket.id} connected to the database`)
+  console.log(`user: ${socket.id} connected to the database`) 
   socket.on("join_conversation", (conversation_id) => {
     socket.join(conversation_id);
     console.log(socket)
     console.log(`user joined conversation no.: ${conversation_id}`)
+
+
+    
+    
   })
 
   socket.on("send_message", (data) => {
@@ -44,6 +48,17 @@ io.on("connection", (socket) => {
      socket.to(data.id).emit("recieve_message", data);
   })
 })
+/*
+//send and get message
+socket.on("sendMessage", ({ sender_email, receiver_email, text }) => {
+  const user = getUser(receiver_email);
+  io.to(user.socket.id).emit("getMessage", {
+    sender_email,
+    text,
+  });
+});
+*/
+
 
 server.listen(process.env.PORT, () => {
   console.log(`listening on port: ${process.env.PORT}`);

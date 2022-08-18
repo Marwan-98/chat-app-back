@@ -2,9 +2,8 @@ import User from "../entities/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Raw } from "typeorm";
-import express  from 'express'
-import { isAuthenticated } from "../middleware/auth";
-import { AuthenticatedRequest } from "../types";
+import express from 'express';
+
 const router = express();
 
 router.post("/add", async (req, res) => {
@@ -51,7 +50,7 @@ router.post("/login", async (req, res) => {
 				}),
 			},
 			relations: {
-				conversations: {users: true, messages: {user: true}}
+				conversations: { users: true, messages: { user: true } }
 			}
 		});
 
@@ -86,7 +85,7 @@ router.get('/me', async (req, res) => {
 			return res.status(400).json(err)
 		}
   })  
-  
+
 
 /*
   router.get('/me', isAuthenticated, async (req: AuthenticatedRequest, res) => {
@@ -120,6 +119,27 @@ router.get('/me', async (req, res) => {
 			return res.status(400).json(err)
 		}
   })
-    
+
+router.get('/:id', async (req, res) => {
+	try {
+
+		const user_id = +req.params.id;
+
+		const user = await User.findOne({
+			where: { id: user_id }, relations: {
+				conversations: { users: true, messages: { user: true } }
+			}}
+
+		)
+	
+			return res.json(user);
+
+		} catch (error) {
+			return res.status(500).json({ message: error });
+	
+	
+		};
+	
+	})
 
 export default router
