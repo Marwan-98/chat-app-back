@@ -6,25 +6,25 @@ import Conversation from "../entities/Conversation";
 const router = express();
 
 router.post("/all", async (req, res) => {
-	try {
-		const { email } = req.body;
+    try {
+        const { email } = req.body;
 
-		const user = await User.findOne({
-			where: {
-				email: Raw((alias) => `LOWER(${alias}) Like LOWER(:value)`, {
-					value: `%${email}%`,
-				}),
-			},
-			relations: {
-				conversations: {users: true, messages: {user: true, conversationID: true}}
-			}
-		});
+        const user = await User.findOne({
+            where: {
+                email: Raw((alias) => `LOWER(${alias}) Like LOWER(:value)`, {
+                    value: `%${email}%`,
+                }),
+            },
+            relations: {
+                conversations: { users: true, messages: { user: true, conversationID: true } }
+            }
+        });
 
-		return res.json( user.conversations )
+        return res.json(user.conversations)
 
-	} catch (err) {
-		res.status(500).json(err);
-	}
+    } catch (err) {
+        res.status(500).json(err);
+    }
 })
 
 
@@ -53,15 +53,15 @@ router.get("/:conv_id", async (req, res) => {
     try {
         const conv_id = +req.params.conv_id;
 
-		const conversation = await Conversation.findOne({ where: { id: conv_id }, relations: {messages: {user: true}} });
+        const conversation = await Conversation.findOne({ where: { id: conv_id }, relations: { messages: { user: true } } });
 
-      
+
         if (!conversation)
             return res.status(404).json({ message: " conversation not found  " });
 
 
 
-			
+
         return res.json(conversation.messages);
 
 
@@ -74,5 +74,35 @@ router.get("/:conv_id", async (req, res) => {
     };
 
 })
+
+
+router.post("/group", async (req, res) => {
+    try {
+        const { users, senderid } = req.body
+
+        const user = await User.findOne({ where: { id: senderid } });
+
+        if (!user)
+            return res.status(404).json({ message: " user not found  " });
+
+
+        const recievers = await User.find({ where: { id: In([...users, senderid.id])}});
+        if (users && senderid) {
+
+     
+
+                const conversation = await Conversation.create({users:recievers})
+
+            
+                    await conversation.save();
+               return res.json(conversation);
+
+            
+
+        }
+        } catch (err) {
+            console.log(err)
+        }
+    })
 
 export default router
