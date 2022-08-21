@@ -8,7 +8,8 @@ import {
     OneToMany,
 
     ManyToMany,
-    JoinTable
+    JoinTable,
+    Column
 } from "typeorm";
 
 import User from "./User";
@@ -18,6 +19,9 @@ import Message from "./Message";
  class Conversation extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
+
+    @Column({default: null})
+    title: string
 
     @ManyToMany(() => User, (user) => user.conversations)
     @JoinTable()

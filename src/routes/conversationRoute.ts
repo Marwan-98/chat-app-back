@@ -78,31 +78,34 @@ router.get("/:conv_id", async (req, res) => {
 
 router.post("/group", async (req, res) => {
     try {
-        const { users, senderid } = req.body
+        const { title, users, senderId } = req.body
 
-        const user = await User.findOne({ where: { id: senderid } });
+        const user = await User.findOne({ where: { id: senderId } });
 
         if (!user)
             return res.status(404).json({ message: " user not found  " });
 
 
-        const recievers = await User.find({ where: { id: In([...users, senderid.id])}});
-        if (users && senderid) {
+        const recievers = await User.find({ where: { id: In([...users]) } });
+        if (users && senderId) {
 
-     
 
-                const conversation = await Conversation.create({users:recievers})
 
-            
-                    await conversation.save();
-               return res.json(conversation);
+            const conversation = await Conversation.create({ 
+                title: title,
+                users: [...recievers, user] 
+            })
 
-            
+
+            await conversation.save();
+            return res.json(conversation);
+
+
 
         }
-        } catch (err) {
-            console.log(err)
-        }
-    })
+    } catch (err) {
+        console.log(err)
+    }
+})
 
 export default router
