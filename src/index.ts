@@ -35,17 +35,19 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
+  console.log(socket.id)
   socket.on("join_conversation", (conversation_id) => {
     socket.join(conversation_id);
   })
 
   socket.on("send_message", (data) => {
-     socket.to(data.id).emit("recieve_message", data);
+    // console.log(data.id)
+     io.to(data.id).emit("recieve_message", data.message);
   })
 
-  socket.on("send_group_message", (data) => {
-    socket.to(data.id).emit("recieve_group_message", data);
- })
+//   socket.on("send_group_message", (data) => {
+//     io.to(data.id).emit("recieve_group_message", data.message);
+//  })
 })
 /*
 //send and get message
