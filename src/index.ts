@@ -44,10 +44,6 @@ io.on("connection", (socket) => {
     // console.log(data.id)
      io.to(data.id).emit("recieve_message", data.message);
   })
-
-//   socket.on("send_group_message", (data) => {
-//     io.to(data.id).emit("recieve_group_message", data.message);
-//  })
 })
 /*
 //send and get message
