@@ -8,7 +8,7 @@ import userRoutes from "./routes/userRoutes"
 import usersRoutes from "./routes/usersRoutes"
 import messageRoutes from "./routes/messageRoute"
 import conversationRoutes from "./routes/conversationRoute"
-import { Server, Socket } from 'socket.io';
+import { Server } from 'socket.io';
 import http from "http";
 import auth from "./middleware/auth";
 
@@ -35,26 +35,14 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log(socket.id)
   socket.on("join_conversation", (conversation_id) => {
     socket.join(conversation_id);
   })
 
   socket.on("send_message", (data) => {
-    // console.log(data.id)
-     io.to(data.id).emit("recieve_message", data.message);
+    io.to(data.id).emit("recieve_message", data.message);
   })
 })
-/*
-//send and get message
-socket.on("sendMessage", ({ sender_email, receiver_email, text }) => {
-  const user = getUser(receiver_email);
-  io.to(user.socket.id).emit("getMessage", {
-    sender_email,
-    text,
-  });
-});
-*/
 
 
 server.listen(process.env.PORT, () => {
