@@ -4,11 +4,11 @@ import morgan from "morgan";
 import { config } from "dotenv";
 import cors from "cors";
 import AppDataSource from "./data-source";
-import userRoutes from "./routes/userRoutes"
-import usersRoutes from "./routes/usersRoutes"
-import messageRoutes from "./routes/messageRoute"
-import conversationRoutes from "./routes/conversationRoute"
-import { Server } from 'socket.io';
+import userRoutes from "./routes/userRoutes";
+import usersRoutes from "./routes/usersRoutes";
+import messageRoutes from "./routes/messageRoute";
+import conversationRoutes from "./routes/conversationRoute";
+import { Server } from "socket.io";
 import http from "http";
 import auth from "./middleware/auth";
 
@@ -29,23 +29,22 @@ app.use("/conversation", auth, conversationRoutes);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
+    origin: "https://chat-7lfa.onrender.com",
+    methods: ["GET", "POST"],
+  },
 });
 
 io.on("connection", (socket) => {
   socket.on("join_conversation", (conversation_id) => {
     socket.join(conversation_id);
-  })
+  });
 
   socket.on("send_message", (data) => {
     io.to(data.id).emit("recieve_message", data.message);
-  })
-})
-
+  });
+});
 
 server.listen(process.env.PORT, () => {
   console.log(`listening on port: ${process.env.PORT}`);
   AppDataSource.initialize();
-})
+});
