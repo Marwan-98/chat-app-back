@@ -44,6 +44,10 @@ io.on("connection", (socket) => {
   });
 });
 
+app.get("/", (_, res) => {
+  res.sendStatus(200);
+});
+
 server.listen(process.env.PORT, () => {
   console.log(`listening on port: ${process.env.PORT}`);
   AppDataSource.initialize();
